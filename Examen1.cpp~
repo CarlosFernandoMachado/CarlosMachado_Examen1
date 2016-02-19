@@ -5,10 +5,118 @@ using std::cin;
 using std::endl;
 
 char** tablero();
+void borrar(char** &ataxx, int size);
+void mover(char** &ataxx, int size, int a, int b, int c, int d, char pl, char altr);
+void imprimir(char** &ataxx, int size);
 
 int main(int argc, char*argv[]){
-	int size = 11;
+	int size = 11,turno = 1;
+	bool validar = true;
 	char** ataxx = tablero();
+	imprimir(ataxx,size);
+	while (true){
+		if(turno % 2 != 0){
+			cout << "--------------------------JUGADOR-1----------------------------" << endl;
+			char pl1 = 'A';
+			int a,b,c,d;
+			while (validar){
+				cout << "Ingrese las coordenadas de la pieza que quiere mover" << endl;
+				cout << "Ingrese la posicion en i: ";
+				cin >> a;
+				cout << "Ingrese la posicion en j: ";
+				cin >> b;
+				if (ataxx[a][b] == pl1 && a >= 0 && a <= 10 && b >= 0 && b <= 10){
+					validar = false;
+				}else{
+					cout << "Porfavor ingrese una posicion valida" << endl;
+				}
+			}
+			validar = true;
+			while (validar){
+				cout << "Ingrese las coordenadas a donde se quiere mover" << endl;
+				cout << "Ingrese la posicion en i: ";
+				cin >> c;
+				cout << "Ingrese la posicion en j: ";
+				cin >> d;
+				int temp,temp2,temp3,temp4;
+				if (a + 2 < 11){
+					temp = a + 2;
+				}else
+					temp = a;
+				if (a - 2 >= 0){
+					temp2 = a - 2;
+				}else 
+					temp2 = a;
+				if (b + 2 < 11){
+					temp3 = b + 2;
+				}else
+					temp3 = b;
+				if (b - 2 >= 0){
+					temp4 = b - 2;
+				}else
+					temp4= b;
+				if (ataxx[c][d] == '+' && c >= temp2 && c <= temp && d >= temp4 && d <= temp3){
+					validar = false;
+				}else{
+					cout << "Porfavor ingrese una posicion valida, no se puede mover donde ya hay piezas" << endl;
+				}
+			}
+			validar = true;
+			mover(ataxx,size,a,b,c,d,pl1,'B');
+			imprimir(ataxx,size);
+			turno ++;
+		}else{
+			cout << "--------------------------JUGADOR-2----------------------------" << endl;
+			char pl2 = 'B';
+			int a,b,c,d;
+			while (validar){
+				cout << "Ingrese la posicion en i: ";
+				cin >> a;
+				cout << "Ingrese la posicion en j: ";
+				cin >> b;
+				if (ataxx[a][b] == pl2 && a >= 0 && a <= 10 && b >= 0 && b <= 10){
+					validar = false;
+				}else{
+					cout << "Porfavor ingrese una posicion valida" << endl;
+				}
+			}
+			validar = true;
+			while (validar){
+				cout << "Ingrese las coordenadas a donde se quiere mover" << endl;
+				cout << "Ingrese la posicion en i: ";
+				cin >> c;
+				cout << "Ingrese la posicion en j: ";
+				cin >> d;
+				int temp,temp2,temp3,temp4;
+				if (a + 2 < 11){
+					temp = a + 2;
+				}else
+					temp = a;
+				if (a - 2 >= 0){
+					temp2 = a - 2;
+				}else 
+					temp2 = a;
+				if (b + 2 < 11){
+					temp3 = b + 2;
+				}else
+					temp3 = b;
+				if (b - 2 >= 0){
+					temp4 = b - 2;
+				}else
+					temp4= b;
+				if (ataxx[c][d] == '+' && c >= temp2 && c <= temp && d >= temp4 && d <= temp3){
+					validar = false;
+				}else{
+					cout << "Porfavor ingrese una posicion valida, no se puede mover donde ya hay piezas" << endl;
+				}
+			}
+			validar = true;
+			mover(ataxx,size,a,b,c,d,pl2,'A');
+			imprimir(ataxx,size);
+			turno --;
+		}
+	}
+	borrar(ataxx,size);
 	return 0;
 }
 char** tablero(){
@@ -38,4 +146,56 @@ char** tablero(){
 		}
 	}
 	return ataxx;
+}
+void borrar(char** &ataxx, int size){
+	for (int i = 0; i < size; i++){
+		delete[] ataxx[i];
+	}
+	delete[] ataxx;
+}
+void mover(char** &ataxx, int size, int a, int b, int c, int d, char pl, char altr){
+	ataxx[c][d] = ataxx[a][b];
+	if(c == a + 2 || d == b + 2 || c == a - 2 || d == b - 2){
+		ataxx[a][b] = '+';
+	}
+	if (ataxx[c+1][d+1] == altr){
+		ataxx[c+1][d+1] = pl;
+	}
+	if (ataxx[c+1][d-1] == altr){
+		ataxx[c+1][d-1] = pl;
+	}
+	if (ataxx[c-1][d+1] == altr){
+		ataxx[c-1][d+1] = pl;
+	}
+	if (ataxx[c-1][d-1] == altr){
+		ataxx[c-1][d-1] = pl;
+	}
+	if (ataxx[c+1][d] == altr){
+		ataxx[c+1][d] = pl;
+	}
+	if (ataxx[c-1][d] == altr){
+		ataxx[c-1][d] = pl;
+	}
+	if (ataxx[c][d+1] == altr){
+		ataxx[c][d+1] = pl;
+	}
+	if (ataxx[c][d-1] == altr){
+		ataxx[c][d-1] = pl;
+	}
+
+}
+void imprimir(char** &ataxx, int size){
+	cout << " 012345678910" << endl;
+	for (int i = 0; i < size; i++){
+		for (int j = 0; j < size; j++){
+			if(j == 0){
+				cout << i;
+			}
+			if(j == size - 1){
+				cout << ataxx[i][j] << endl;
+			}else{
+				cout << ataxx[i][j];
+			}
+		}
+	}
 }
