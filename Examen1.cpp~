@@ -8,7 +8,7 @@ char** tablero();
 void borrar(char** &ataxx, int size);
 void mover(char** &ataxx, int size, int a, int b, int c, int d, char pl, char altr);
 void imprimir(char** &ataxx, int size);
-void ganador(char** &ataxx, int size);
+bool ganador(char** &ataxx, int size);
 
 int main(int argc, char*argv[]){
 	int size = 11,turno = 1;
