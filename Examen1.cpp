@@ -8,14 +8,14 @@ char** tablero();
 void borrar(char** &ataxx, int size);
 void mover(char** &ataxx, int size, int a, int b, int c, int d, char pl, char altr);
 void imprimir(char** &ataxx, int size);
-
+bool ganador(char** &ataxx, int size);
 
 int main(int argc, char*argv[]){
 	int size = 11,turno = 1;
-	bool validar = true;
+	bool validar = true,menu = true;
 	char** ataxx = tablero();
 	imprimir(ataxx,size);
-	while (true){
+	while (menu){
 		if(turno % 2 != 0){
 			cout << "--------------------------JUGADOR-1----------------------------" << endl;
 			char pl1 = 'A';
@@ -65,12 +65,14 @@ int main(int argc, char*argv[]){
 			validar = true;
 			mover(ataxx,size,a,b,c,d,pl1,'B');
 			imprimir(ataxx,size);
+			menu = ganador(ataxx,size);
 			turno ++;
 		}else{
 			cout << "--------------------------JUGADOR-2----------------------------" << endl;
 			char pl2 = 'B';
 			int a,b,c,d;
 			while (validar){
+				cout << "Ingrese las coordenadas de la pieza que quiere mover" << endl;
 				cout << "Ingrese la posicion en i: ";
 				cin >> a;
 				cout << "Ingrese la posicion en j: ";
@@ -114,6 +116,7 @@ int main(int argc, char*argv[]){
 			validar = true;
 			mover(ataxx,size,a,b,c,d,pl2,'A');
 			imprimir(ataxx,size);
+			menu = ganador(ataxx,size);
 			turno --;
 		}
 	}
@@ -199,4 +202,45 @@ void imprimir(char** &ataxx, int size){
 			}
 		}
 	}
+}
+bool ganador(char** &ataxx, int size){
+	int cont1 = 0, cont2 = 0;
+	bool val1 = true,val2 = true, val3 = true;
+	for (int i = 0; i < size; i++){
+		for (int j = 0; j < size; j++){
+			if (ataxx[i][j] == 'A')
+				cont1 += 1;
+				val1 = false;
+		}
+	}
+	for (int i = 0; i < size; i++){
+		for (int j = 0; j < size; j++){
+			if (ataxx[i][j] == 'B')
+				cont2 += 1;
+				val2 = false;
+		}
+	}
+	for (int i = 0; i < size; i++){
+		for (int j = 0; j < size; j++){
+			if (ataxx[i][j] == '+')
+				val3 = false;
+		}
+	}
+	if (val3){
+		if (cont1 < cont2){
+			cout << "HA GANADO EL JUGADOR B";
+		}else if (cont1 > cont2){
+			cout << "HA GANADO EL JUGADOR A";
+		}else{
+			cout << "EMPATE";
+		}
+		return false;
+	}else if (val1){
+		cout << "Ha ganado el jugador B";
+		return false;
+	}else if(val2){
+		cout << "Ha ganado el jugador A";
+		return false;
+	}
+	return true;
 }
